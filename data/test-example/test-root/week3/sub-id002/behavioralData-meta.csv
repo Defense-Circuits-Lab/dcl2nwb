@@ -1,0 +1,7 @@
+data_index,name,description,reference_frame,unit,comments,interface_subtype
+pos1,X,X,X,X,X,position
+pos2,Y,Y,Y,Y,Y,position
+behavioralSeries1,A,A,nan,A,A,time_series
+behavioralSeries2,B,B,nan,B,B,time_series
+behavioralEpoch1,C,C,nan,nan,C,epochs
+behavioralEpoch2,D,D,nan,nan,D,epochs
