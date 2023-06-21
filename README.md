@@ -13,11 +13,11 @@ conda env create -f environment-[unx/win].yml
 ```
 3. install the dcl2nwb package from this repository,
 ```
-pip install git+https://github.com/Hamidreza-Alimohammadi/dcl2nwb.git#egg=dcl2nwb
+pip install git+https://github.com/Defense-Circuits-Lab/dcl2nwb.git#egg=dcl2nwb
 ```
 or simply clone the repository and then install,
 ```
-git clone https://github.com/Hamidreza-Alimohammadi/dcl2nwb.git
+git clone https://github.com/Defense-Circuits-Lab/dcl2nwb.git
 python setup.py install
 ```
 or if you would like to install via pip locally,
@@ -46,11 +46,11 @@ on the same directory level of the selected root marked with the time of convers
 ### Dependencies
 Check the environment.yml file.
 
-## Author
+## Author(s)
 * Hamidreza Alimohammadi (alimohammadi.hamidreza@gmail.com)
-
+*
 ## Version History
 
-* 0.1
-    * Initial Release
+* 0.0.1
+
 
