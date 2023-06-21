@@ -32,7 +32,7 @@ from dcl2nwb import main
 
 main.generate_templates()
 ```
-this would generate the templates folder containing the pre-structured tables and for all sessions these files should be updated separately. I would recommend to keep up with the naming conventions and 
+this would generate the templates folder in ```./data``` containing the pre-structured tables and for all sessions these files should be updated separately. I would recommend to keep up with the naming conventions and 
 saving the sessions in a tree like directory and only copy the new session's data onto tables. Note that one needs to simultaneously sync main-data and their associated meta-data. No nans should 
 be given values.
 
@@ -41,7 +41,7 @@ be given values.
 main.start_conversion()
 ```
 an interactive dialog-box would appear to choose the root directory of the experiment containing all the sessions, choose it and all is done hopefully! an exact replica of the directory tree would be created
-on the same directory level of the selected root marked with the time of conversion, including separate nwb files. For a test run, you could navigate to the ```dcl2nwb/test-example/test-root``` and just hit select, from thereon it will automatically convert all the sessions and save it to the folder on the same directory level of the ```test-root```.
+on the same directory level of the selected root marked with the time of conversion, including separate nwb files. For a test run, you could navigate to the ```./data/test-example/test-root``` and just hit select, from thereon it will automatically convert all the sessions and save it to the folder on the same directory level of the ```test-root```.
 
 ### Dependencies
 Check the environment.yml file.
