@@ -3,15 +3,18 @@ from pynwb import NWBHDF5IO
 import pandas as pd
 import numpy as np
 import os
+from pathlib import Path
 from tkinter.filedialog import askdirectory
 from datetime import datetime
 
 
 in_dir = askdirectory(title='select the input root directory...')
-name_ = in_dir.split('/')[-1]
+# name_ = in_dir.split('/')[-1]
+name_ = Path(in_dir).name  # name of teh selected directory
 time_ = datetime.now().strftime('%Y%m%d-%H%M%S')
 root_name = f'{name_}-NWB-{time_}'
-out_dir = os.path.join('/'.join(in_dir.split('/')[:-1]), root_name)  # to make a new tree just on the same level
+# out_dir = os.path.join('/'.join(in_dir.split('/')[:-1]), root_name)  # to make a new tree just on the same level
+out_dir = Path(in_dir).parents[0] / root_name  # to make a new tree just on the same level
 os.mkdir(out_dir)  # make the new directory | can never be replaced or rewritten due to datatime component ;)
 
 for root_, dir_, file_ in os.walk(in_dir):
@@ -22,7 +25,7 @@ for root_, dir_, file_ in os.walk(in_dir):
     if not any(dir_):
         # read in the main-info-sheet
         try:
-            main_info_dict = pd.read_csv(os.path.join(root_, 'main-info-sheet.csv'), index_col='data/meta').to_dict()
+            main_info_dict = pd.read_csv(Path(root_) / 'main-info-sheet.csv', index_col='data/meta').to_dict()
         except NameError:
             raise ('couldn\'t find main-info-sheet.csv...\n'
                    'check your directories!')
