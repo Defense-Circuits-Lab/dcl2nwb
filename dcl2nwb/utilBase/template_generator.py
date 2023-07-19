@@ -1,9 +1,11 @@
 import pandas as pd
 import numpy as np
+from pathlib import Path
 import os
 
 
-out_dir = os.path.join('/'.join(__file__.split('/')[:-3]), 'data/templates')  # create out_dir based on current path of the template_generator module
+# create out_dir based on current path of the template_generator module
+out_dir = Path(__file__).parents[2] / 'data/templates'
 if not os.path.exists(out_dir):
     os.mkdir(out_dir)
 
