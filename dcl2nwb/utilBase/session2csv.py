@@ -13,7 +13,9 @@ import shutil
 
 def session2csv(input_dir, experimenter,
                 convert_behavior, convert_cardiac, convert_thermal,
-                description='na', doi='na', keywords='na'):
+                description='na',
+                doi='https://doi.org/10.1038/s41593-022-01252-w',
+                keywords='Integrated cardio-behavioral defensive states'):
     """
     A function to convert sessions into pre-structured csv files to be fed into dcl2nwb pipeline.
     :param input_dir: the path object pointing to a single session
@@ -37,8 +39,8 @@ def session2csv(input_dir, experimenter,
     else:
         pathlib.Path.mkdir(out_dir)
 
-    # lines_main_path = r'F:\Jeremy\MATLAB_Scripts\Toolbox\+DataBase\+Lists\MouseLines_List.mat'  # to be fixed at the DCL
-    lines_main_path = r'C:\Users\DCL\Desktop\DCL-files\MouseLines_List.mat'  # test on my PC
+    lines_main_path = r'F:\Jeremy\MATLAB_Scripts\Toolbox\+DataBase\+Lists\MouseLines_List.mat'  # to be fixed at the DCL
+    # lines_main_path = r'C:\Users\DCL\Desktop\DCL-files\MouseLines_List.mat'  # test on my PC
     try:
         lines_main = loadmat(lines_main_path)  # to be fixed at the DCL
     except:
@@ -280,10 +282,10 @@ def session2csv(input_dir, experimenter,
         dict_ecg_dev = {
             'manufacturer': ['npi'],
             'description': ['Modular amplifier for electro-physiological recordings'],
-            'filtering': ['notch-60Hz-analog'],
-            'gain': ['string-100'],
-            'offset': ['string-0'],
-            'synchronization': ['taken care of via ...'],
+            'filtering': ['30-1000Hz bandpass'],
+            'gain': ['tuned to 1000'],
+            'offset': ['set to 0'],
+            'synchronization': ['intrinsically taken care of via the Plexon system (endpoint-recording-device)'],
             'endpoint_recording_device': ['endpoint_recording_device']
         }
         df_ = pd.DataFrame(dict_ecg_dev)
@@ -297,7 +299,7 @@ def session2csv(input_dir, experimenter,
         dict_ = {
             'electrode_name': ['el_0', 'el_1', 'ref'],
             'electrode_location': ['right upper-chest', 'left lower-chest', 'top of the head'],
-            'electrode_info': ['descriptive info', 'descriptive info', 'descriptive info']
+            'electrode_info': ['none', 'none', 'none']
         }
         df_ = pd.DataFrame(dict_)
         df_.to_csv(out_dir / 'ecg-electrodes-meta.csv')
@@ -310,8 +312,8 @@ def session2csv(input_dir, experimenter,
         dict_ = {
             'channel_name': ['ch_0', 'ch_1'],
             'channel_type': ['single', 'differential'],
-            'involved_electrodes': ['el_0', 'el_0 and el_1'],
-            'channel_info': ['channel info on ch_0', 'channel info on ch_1']
+            'involved_electrodes': ['el_1', 'el_0 and el_1'],
+            'channel_info': ['none', 'none']
         }
         df_ = pd.DataFrame(dict_)
         df_.to_csv(out_dir / 'ecg-channels-meta.csv')
@@ -554,7 +556,7 @@ def session2csv(input_dir, experimenter,
             dict_events_meta['data_index'].append('pureTone')
             dict_events_meta['name'].append('pure tone')
             dict_events_meta['unit'].append('na')
-            dict_events_meta['description'].append('pure tone stimulation played in specific intervals of the session.'
+            dict_events_meta['description'].append('pure tone stimulation played in specific intervals of the session. '
                                                    'in the column data: 1 and -1 indicate the start and end of a '
                                                    'period of event respectively.')
             dict_events_meta['comments'].append('none')
