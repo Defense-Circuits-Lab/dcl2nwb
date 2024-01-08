@@ -1,0 +1,70 @@
+Metadata-Version: 2.1
+Name: dcl2nwb
+Version: 0.0.1
+Summary: adaptive and customizable conversion tool to standardize the data storage of Defense Circuits Lab (DCL) into NWB format
+Author: Hamidreza Alimohammadi
+Author-email: <alimohammadi.hamidreza@gmail.com>
+Keywords: Python,NWB,ReTune,DCL
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: Linux :: Ubuntu
+Classifier: Operating System :: Microsoft :: Windows
+Description-Content-Type: text/markdown
+
+# dcl2nwb [Python] package for NWB data standard conversion
+This repository contains the codes to convert acquired and processed data from Defense Circuits Lab (DCL) into NWB standard format.
+
+## Description
+This package is built to specifically suit the experimental data of DCL laboratory, mainly concerned with behavioral analysis of rodents under conditioned/induced fear and anxity utilizing e.g. contextual/optogenetics stimulus, however, it is easily extendable for the most generalized purpose. 
+The most important advantage of this package is to interactively communicate with the experimenter through a few pre-structured tables (.csv) without the need to get into coding, whatsoever. 
+
+To start using the package:
+1. install [Conda](https://docs.conda.io/en/latest/miniconda.html)/[Anaconda](https://www.anaconda.com/download),
+2.  create an environment using environment-[unx/win].yml (for Unix and Windows OS) file based on your OS,
+```
+conda env create -f environment-[unx/win].yml
+```
+3. install the dcl2nwb package from this repository,
+```
+pip install git+https://github.com/Defense-Circuits-Lab/dcl2nwb.git#egg=dcl2nwb
+```
+or simply clone the repository and then install,
+```
+git clone https://github.com/Defense-Circuits-Lab/dcl2nwb.git
+python setup.py install
+```
+or if you would like to install via pip locally,
+```
+pip install -e .
+```
+while in the cloned directory.
+
+4. now, the package should be installed in your environment, simply start with:
+```
+from dcl2nwb import main
+
+main.generate_templates()
+```
+this would generate the templates folder in ```./data``` containing the pre-structured tables and for all sessions these files should be updated separately. I would recommend to keep up with the naming conventions and 
+saving the sessions in a tree like directory and only copy the new session's data onto tables. Note that one needs to simultaneously sync main-data and their associated meta-data. No nans should 
+be given values.
+
+5. get started with the conversion:
+```
+main.start_conversion()
+```
+an interactive dialog-box would appear to choose the root directory of the experiment containing all the sessions, choose it and all is done hopefully! an exact replica of the directory tree would be created
+on the same directory level of the selected root marked with the time of conversion, including separate nwb files. For a test run, you could navigate to the ```./data/test-example/test-root``` and just hit select, from thereon it will automatically convert all the sessions and save it to the folder on the same directory level of the ```test-root```.
+
+### Dependencies
+Check the environment.yml file.
+
+## Author(s)
+* Hamidreza Alimohammadi (alimohammadi.hamidreza@gmail.com)
+*
+## Version History
+
+* 0.0.1
+
+
+
+

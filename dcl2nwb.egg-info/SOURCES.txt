@@ -1,0 +1,8 @@
+README.md
+setup.py
+dcl2nwb/__init__.py
+dcl2nwb/main.py
+dcl2nwb.egg-info/PKG-INFO
+dcl2nwb.egg-info/SOURCES.txt
+dcl2nwb.egg-info/dependency_links.txt
+dcl2nwb.egg-info/top_level.txt

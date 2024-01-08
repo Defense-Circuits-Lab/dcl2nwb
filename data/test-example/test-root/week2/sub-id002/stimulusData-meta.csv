@@ -1,0 +1,5 @@
+data_index,name,unit,description,comments,excitation_lambda,location,rate,device,stim_type
+contextStim1,X,X,X,X,nan,nan,nan,nan,context
+contextStim2,Y,Y,Y,Y,nan,nan,nan,nan,context
+optoStim1,A,nan,A,A,0.3,A,A,ogen_device_name_1,ogen
+optoStim2,B,nan,B,B,0.5,B,B,ogen_device_name_2,ogen
