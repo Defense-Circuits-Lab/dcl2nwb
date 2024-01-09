@@ -51,6 +51,6 @@ Check the environment.yml file.
 *
 ## Version History
 
-* 0.0.1
+* 0.1.0
 
 
