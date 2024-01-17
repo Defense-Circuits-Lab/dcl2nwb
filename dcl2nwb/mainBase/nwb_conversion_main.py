@@ -1,4 +1,3 @@
-nwb_conversion_main.py
 from dcl2nwb.mainBase.base_func_sheet import *
 from dcl2nwb.mainBase.integration_from_csv import drive_scan
 from dcl2nwb.utilBase.session2csv import session2csv
