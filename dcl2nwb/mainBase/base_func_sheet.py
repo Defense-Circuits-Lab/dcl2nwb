@@ -1,4 +1,3 @@
-base_func_sheet.py
 from pynwb import (
     NWBFile,
     TimeSeries,
