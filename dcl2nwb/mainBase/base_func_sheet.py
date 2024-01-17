@@ -1,3 +1,4 @@
+base_func_sheet.py
 from pynwb import (
     NWBFile,
     TimeSeries,
@@ -110,7 +111,6 @@ def images_information(nwb_file, file_pointer):
         # since no index is set to DataFrame read onto the system, exclude the 0th element from keys()
         [dict_to_feed.update({key_: df_.loc[dum_][key_]}) for key_ in list(df_.keys()[1:])]
         dict_to_feed.update({'format': 'external'})  # external format setting
-        print([dict_to_feed['external_file']])  # test
         dict_to_feed.update({'external_file': [dict_to_feed['external_file']]})  # external format setting
         dict_to_feed.update({'device': nwb_file.get_device(dict_to_feed['device'])})  # external format setting
         images_obj = ImageSeries(
@@ -163,8 +163,8 @@ def acquisition(nwb_file, file_pointer):
         # build a new dict to feed
         dict_to_feed = {}
         [dict_to_feed.update({key_: df_meta.loc[dum_][key_]}) for key_ in list(df_meta.keys())]
-        time_array = df_main.eval(f'{dum_}_time').to_numpy()
-        data_array = df_main.eval(f'{dum_}_data').to_numpy()
+        time_array = df_main[f'{dum_}_time'].to_numpy()
+        data_array = df_main[f'{dum_}_data'].to_numpy()
         # logical exclusion of nan for array size difference
         dict_to_feed.update({'timestamps': time_array[~np.isnan(data_array)],
                              'data': data_array[~np.isnan(data_array)]})
@@ -210,8 +210,8 @@ def processed_data(nwb_file, file_pointer):
         dict_to_feed = {}
         [dict_to_feed.update({key_: df_meta.loc[dum_][key_]}) for key_ in list(df_meta.keys())
          if key_ not in keys_to_exclude]
-        time_array = df_main.eval(f'{dum_}_time').to_numpy()
-        data_array = df_main.eval(f'{dum_}_data').to_numpy()
+        time_array = df_main[f'{dum_}_time'].to_numpy()
+        data_array = df_main[f'{dum_}_data'].to_numpy()
         # logical exclusion of nan for array size difference
         dict_to_feed.update({'timestamps': time_array[~np.isnan(data_array)],
                              'data': data_array[~np.isnan(data_array)]})
@@ -263,8 +263,8 @@ def behavioral_data(nwb_file, file_pointer):
 
         if df_meta.loc[dum_]['interface_subtype'] == 'position':
 
-            time_array = df_main.eval(f'{dum_}_time').to_numpy()
-            data_array = df_main.eval(f'{dum_}_data').to_numpy()
+            time_array = df_main[f'{dum_}_time'].to_numpy()
+            data_array = df_main[f'{dum_}_data'].to_numpy()
             # logical exclusion of nan for array size difference
             dict_to_feed.update({'timestamps': time_array[~np.isnan(data_array)],
                                  'data': data_array[~np.isnan(data_array)]})
@@ -275,8 +275,8 @@ def behavioral_data(nwb_file, file_pointer):
 
         elif df_meta.loc[dum_]['interface_subtype'] == 'time_series':
 
-            time_array = df_main.eval(f'{dum_}_time').to_numpy()
-            data_array = df_main.eval(f'{dum_}_data').to_numpy()
+            time_array = df_main[f'{dum_}_time'].to_numpy()
+            data_array = df_main[f'{dum_}_data'].to_numpy()
             # logical exclusion of nan for array size difference
             dict_to_feed.update({'timestamps': time_array[~np.isnan(data_array)],
                                  'data': data_array[~np.isnan(data_array)]})
@@ -287,11 +287,11 @@ def behavioral_data(nwb_file, file_pointer):
 
         elif df_meta.loc[dum_]['interface_subtype'] == 'epochs':
 
-            time_array = df_main.eval(f'{dum_}_time')
+            time_array = df_main[f'{dum_}_time']
 
             if not isinstance(time_array[0], str):
                 time_array = time_array.to_numpy()
-                data_array = df_main.eval(f'{dum_}_data').to_numpy()
+                data_array = df_main[f'{dum_}_data'].to_numpy()
                 time_stamps = time_array[~np.isnan(data_array)]
                 data_ = data_array[~np.isnan(data_array)]
                 # preconditioning data
@@ -365,24 +365,22 @@ def stimulation_data(nwb_file, file_pointer):
 
         if df_meta.loc[dum_]['stim_type'] == 'context':
 
-            time_array = df_main.eval(f'{dum_}_time').to_numpy()
-            data_array = df_main.eval(f'{dum_}_data').to_numpy()
+            time_array = df_main[f'{dum_}_time'].to_numpy()
+            data_array = df_main[f'{dum_}_data'].to_numpy()
             # logical exclusion of nan for array size difference
             dict_to_feed.update({'timestamps': time_array[~np.isnan(data_array)],
                                  'data': data_array[~np.isnan(data_array)]})
-            print(time_array)
-            print(data_array)
+
             time_series_obj = TimeSeries(
                 **dict_to_feed
             )
-            print(time_array[~np.isnan(data_array)])
-            print(data_array[~np.isnan(data_array)])
+
             nwb_file.add_stimulus(time_series_obj)
 
         elif df_meta.loc[dum_]['stim_type'] == 'ogen':
 
-            time_array = df_main.eval(f'{dum_}_time').to_numpy()
-            data_array = df_main.eval(f'{dum_}_data').to_numpy()
+            time_array = df_main[f'{dum_}_time'].to_numpy()
+            data_array = df_main[f'{dum_}_data'].to_numpy()
             # logical exclusion of nan for array size difference
             dict_to_feed.update({'timestamps': time_array[~np.isnan(data_array)],
                                  'data': data_array[~np.isnan(data_array)]})
@@ -399,8 +397,9 @@ def stimulation_data(nwb_file, file_pointer):
             ogen_series_obj = OptogeneticSeries(
                 name=dict_to_feed['name'],
                 timestamps=dict_to_feed['timestamps'],
-                data=dict_to_feed['data'],  # watts
+                data=dict_to_feed['data'],
                 site=ogen_site_obj,
+                comments=dict_to_feed['comments']
             )
             nwb_file.add_stimulus(ogen_series_obj)
 
@@ -498,8 +497,8 @@ def cardiac_data(nwb_file, file_pointer):
 
         if df_meta.loc[dum_]['interface_subtype'] == 'ECG':
 
-            time_array = df_main.eval(f'{dum_}_time').to_numpy()
-            data_array = df_main.eval(f'{dum_}_data').to_numpy()
+            time_array = df_main[f'{dum_}_time'].to_numpy()
+            data_array = df_main[f'{dum_}_data'].to_numpy()
             # logical exclusion of nan for array size difference
             dict_to_feed.update({'timestamps': time_array[~np.isnan(data_array)],
                                  'data': data_array[~np.isnan(data_array)]})
@@ -532,8 +531,8 @@ def cardiac_data(nwb_file, file_pointer):
 
         elif df_meta.loc[dum_]['interface_subtype'] == 'HR':
 
-            time_array = df_main.eval(f'{dum_}_time').to_numpy()
-            data_array = df_main.eval(f'{dum_}_data').to_numpy()
+            time_array = df_main[f'{dum_}_time'].to_numpy()
+            data_array = df_main[f'{dum_}_data'].to_numpy()
             # logical exclusion of nan for array size difference
             dict_to_feed.update({'timestamps': time_array[~np.isnan(data_array)],
                                  'data': data_array[~np.isnan(data_array)]})
@@ -561,8 +560,8 @@ def cardiac_data(nwb_file, file_pointer):
 
         elif df_meta.loc[dum_]['interface_subtype'] == 'AUX':
 
-            time_array = df_main.eval(f'{dum_}_time').to_numpy()
-            data_array = df_main.eval(f'{dum_}_data').to_numpy()
+            time_array = df_main[f'{dum_}_time'].to_numpy()
+            data_array = df_main[f'{dum_}_data'].to_numpy()
             # logical exclusion of nan for array size difference
             dict_to_feed.update({'timestamps': time_array[~np.isnan(data_array)],
                                  'data': data_array[~np.isnan(data_array)]})
@@ -589,4 +588,3 @@ def cardiac_data(nwb_file, file_pointer):
             cardio_module.add(aux_object)
 
     return nwb_file
-

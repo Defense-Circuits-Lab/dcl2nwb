@@ -1,3 +1,4 @@
+session2csv.py
 """A module for converting each session into corresponding pre-structured CSV tables.
 Evoked at each session from the main conversion module, the products would be finally
 removed from within the main module itself.
@@ -110,6 +111,7 @@ def session2csv(input_dir, experimenter,
 
     meta_file = list(input_dir.parent.glob(f'{line}_{mouse_id}_Meta.mat'))  # must be located in the root folder
     if any(meta_file):
+        meta_file = loadmat(meta_file[0])
         subject_genotype = meta_file['General'][1][6][0]
         subject_sex = meta_file['General'][1][4][0]
         # subject_dob = meta_file['General'][1][5][0]  # could be added as a date-time format later
@@ -135,12 +137,14 @@ def session2csv(input_dir, experimenter,
 
     # devices meta
     dict_devices = {
-        'name': ['endpoint_recording_device', 'Pike camera', 'A655sc', 'RZ6'],
-        'manufacturer': ['Plexon(Omniplex)', 'Allied vision', 'FLIR', 'Tucker-Davis systems'],
+        'name': ['endpoint_recording_device', 'Pike camera', 'A655sc', 'RZ6', 'Ce:YAG Laser diode', 'Stimulus isolator'],
+        'manufacturer': ['Plexon(Omniplex)', 'Allied vision', 'FLIR', 'Tucker-Davis systems', 'Doric', 'npi'],
         'description': ['Main digital-analog recording system',
                         'Top view RGB camera',
                         'Top view for infra-red camera',
-                        'Real-time processor; sound generation']
+                        'Real-time processor; sound generation',
+                        'Light source for opto-genetic stimulations',
+                        'DC current generator to deliver foot shocks']
     }
     df_ = pd.DataFrame(dict_devices)
     df_.to_csv(out_dir / 'devices-meta.csv')
@@ -539,7 +543,7 @@ def session2csv(input_dir, experimenter,
     if any(events_file):
         file_ = loadmat(events_file[0])
         # pure tone:
-        event_range = file_['Stimulus_Data']['pureTone_times'][0][0]
+        event_range = file_['Stimulus_Data']['Tone'][0][0]['pureTone_times'][0][0]
         if np.any(event_range):
             # # to save in the conventional way to be fed into the interval_series
             # range_list = [f'[{event_range[i, 0]}, {event_range[i, 1]}]' for i in range(len(event_range))]
@@ -566,7 +570,7 @@ def session2csv(input_dir, experimenter,
             dict_events_meta['device'].append('nan')
             dict_events_meta['stim_type'].append('context')
         # white noise:
-        event_range = file_['Stimulus_Data']['whiteNoise_times'][0][0]
+        event_range = file_['Stimulus_Data']['Noise'][0][0]['whiteNoise_times'][0][0]
         if np.any(event_range):
             # # to save in the conventional way to be fed into the interval_series
             # range_list = [f'[{event_range[i, 0]}, {event_range[i, 1]}]' for i in range(len(event_range))]
@@ -593,7 +597,7 @@ def session2csv(input_dir, experimenter,
             dict_events_meta['device'].append('nan')
             dict_events_meta['stim_type'].append('context')
         # shock:
-        event_range = file_['Stimulus_Data']['shock_times'][0][0]
+        event_range = file_['Stimulus_Data']['Shock'][0][0]['shock_times'][0][0]
         if np.any(event_range):
             # # to save in the conventional way to be fed into the interval_series
             # range_list = [f'[{event_range[i, 0]}, {event_range[i, 1]}]' for i in range(len(event_range))]
@@ -617,10 +621,11 @@ def session2csv(input_dir, experimenter,
             dict_events_meta['excitation_lambda'].append('nan')
             dict_events_meta['location'].append('nan')
             dict_events_meta['rate'].append('nan')
+            # although the device is the 'Stimulus isolator' but the TimeSeries does not get a field named device
             dict_events_meta['device'].append('nan')
             dict_events_meta['stim_type'].append('context')
         # opto:
-        event_range = file_['Stimulus_Data']['opto_times'][0][0]
+        event_range = file_['Stimulus_Data']['Opto'][0][0]['opto_times'][0][0]
         if np.any(event_range):
             # # to save in the conventional way to be fed into the interval_series
             # range_list = [f'[{event_range[i, 0]}]' for i in range(len(event_range))]
@@ -640,11 +645,14 @@ def session2csv(input_dir, experimenter,
             dict_events_meta['description'].append(
                 'optogenetics stimulation applied in specific intervals of the session. in the column data: 1 and -1 '
                 'indicate the start and end of a period of event respectively.')
-            dict_events_meta['comments'].append('none')
-            dict_events_meta['excitation_lambda'].append('590')
-            dict_events_meta['location'].append('not registered')
+            comments_ = file_['Stimulus_Data']['Opto'][0][0]['comments'][0][0][0]
+            dict_events_meta['comments'].append(comments_)
+            ex_lam = file_['Stimulus_Data']['Opto'][0][0]['excitation_lambda'][0][0][0]
+            dict_events_meta['excitation_lambda'].append(ex_lam)
+            ex_loc = file_['Stimulus_Data']['Opto'][0][0]['excitation_location'][0][0][0]
+            dict_events_meta['location'].append(ex_loc)
             dict_events_meta['rate'].append('nan')
-            dict_events_meta['device'].append('endpoint_recording_device')
+            dict_events_meta['device'].append('Ce:YAG Laser diode')  # the device for optogenetics
             dict_events_meta['stim_type'].append('ogen')
 
         # export the dict_events
@@ -674,13 +682,14 @@ def session2csv(input_dir, experimenter,
     #
 
     images_file = list(input_dir.glob(f'*_{paradigm}.AVI'))
-    print(f'*_{paradigm}.AVI: {images_file}')
+    # print(f'*_{paradigm}.AVI: {images_file}')
     if any(images_file):
         dict_image = {
-            'name': 'behavior video',
+            'name': 'behavior_recording',
             'description': 'video of the behaving mouse in this session',
             'unit': 'na',
-            'external_file': images_file[0],
+            # 'external_file': '/recordings',  # for the relative path of the video relative to the .nwb file
+            'external_file': images_file[0],  # for the absolute path | to be saved and changed later in the main func
             'starting_time': 0.0,
             'rate': 30.0,
             'device': 'Pike camera'

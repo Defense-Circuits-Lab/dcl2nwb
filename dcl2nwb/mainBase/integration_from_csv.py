@@ -1,3 +1,4 @@
+integration_from_csv.py
 import warnings
 import pandas as pd
 
@@ -32,6 +33,9 @@ def drive_scan(in_dir, in_dir_file, out_dir, now_):
             # primary check
             if not rglob_list:
                 # nothing returned
+                print(in_dir)
+                print(in_dir_file)
+                print(root_)
                 warnings.warn(f'NO matching directory could be found for the following root-name (ignoring...): \n'
                               f'{root_}')
                 is_found = False
@@ -104,4 +108,3 @@ def drive_scan(in_dir, in_dir_file, out_dir, now_):
           f'{output_path}')
 
     return list_df
-

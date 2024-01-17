@@ -1,3 +1,4 @@
+nwb_conversion_main.py
 from dcl2nwb.mainBase.base_func_sheet import *
 from dcl2nwb.mainBase.integration_from_csv import drive_scan
 from dcl2nwb.utilBase.session2csv import session2csv
@@ -79,20 +80,32 @@ for cntr, index_ in enumerate(list(report_unq.index)):
                              f"{report_unq.at[index_, 'Date']}_"
                              f"{report_unq.at[index_, 'Paradigm']}")
     conversion_report.at[cntr, 'session'] = nwb_session_path_name
-    to_feed = {
-        'input_dir': session_path,
-        'experimenter': report_unq.at[index_, 'Experimenter'],
-        'convert_behavior': bool(report_unq.at[index_, 'Behaviour']),
-        'convert_cardiac': bool(report_unq.at[index_, 'HeartRate']),
-        'convert_thermal': bool(report_unq.at[index_, 'Thermal']),
-        'description': 'na',
-        'doi': 'na',
-        'keywords': 'na'
-    }
-    status_ = session2csv(**to_feed)
+
+    # try blocking for the session2csv
+    try:
+        to_feed = {
+            'input_dir': session_path,
+            'experimenter': report_unq.at[index_, 'Experimenter'],
+            'convert_behavior': bool(report_unq.at[index_, 'Behaviour']),
+            'convert_cardiac': bool(report_unq.at[index_, 'HeartRate']),
+            'convert_thermal': bool(report_unq.at[index_, 'Thermal']),
+            'description': 'na',
+            'doi': 'na',
+            'keywords': 'na'
+        }
+        status_ = session2csv(**to_feed)
+    except Exception as error:
+        session2csv_error = error  # write the error to this variable, if any...
+        conversion_report.at[cntr, 'session2csv'] = f'{type(error).__name__}: {error}'
+        conversion_report.at[cntr, 'csv2nwb'] = 'na'
+        print(f'{TextColor.FAIL}ERROR CAPTURED (session2csv): The session2csv ran into an error '
+              f'-{type(error).__name__}: {error}- moving on to the next session...{TextColor.ENDC}')
+        continue
+
     conversion_report.at[cntr, 'session2csv'] = status_  # session2csv status update
     path_to_csv = session_path / 'session2csv'  # in the case of any csv generation this folder would exist
     print(f'{TextColor.OKBLUE}** status of the session2csv(): "{status_}" **{TextColor.ENDC}')
+
     if status_ == 'conversionSuccessful':
         # try blocking to move on in huge batch conversions and capture the error risen from base_func_sheet
         try:
@@ -123,6 +136,17 @@ for cntr, index_ in enumerate(list(report_unq.index)):
             nwb_session_path = out_dir_path / f'{nwb_session_path_name}_NWB'
             pathlib.Path.mkdir(nwb_session_path)
 
+            # make directory for external files
+            ext_file_path = nwb_session_path / 'recordings'
+            pathlib.Path.mkdir(ext_file_path)
+
+            # change the external path for the relevant path of the recordings
+            rec_path = pathlib.Path(
+                nwb_file.acquisition['behavior_recording'].external_file[0])  # as it is read as list
+            shutil.copy2(rec_path, ext_file_path)
+            nwb_file.acquisition['behavior_recording'].fields['external_file'] = (
+                str(ext_file_path.relative_to(nwb_session_path) / rec_path.name))
+
             # write it onto the file
             with NWBHDF5IO(nwb_session_path / f'{nwb_session_path_name}_NWB-session.nwb', 'w') as io:
                 io.write(nwb_file)
@@ -133,6 +157,7 @@ for cntr, index_ in enumerate(list(report_unq.index)):
             conversion_report.at[cntr, 'csv2nwb'] = f'{type(error).__name__}: {error}'
             print(f'{TextColor.FAIL}ERROR CAPTURED (base_func_sheet): The csv2nwb ran into an error '
                   f'-{type(error).__name__}: {error}- moving on to the next session...{TextColor.ENDC}')
+            conversion_report.to_csv(out_dir_path / f'conversion_report_{now_}.csv')
             continue
     else:
         # delete the generated csv files, if any...
@@ -145,7 +170,7 @@ for cntr, index_ in enumerate(list(report_unq.index)):
             f'{TextColor.FAIL}WARNING CAPTURED (session2csv): Incomplete CSV conversion... '
             f'moving on to the next session...{TextColor.ENDC}')
         conversion_report.at[cntr, 'csv2nwb'] = 'na'
+        conversion_report.to_csv(out_dir_path / f'conversion_report_{now_}.csv')
         continue
 
-conversion_report.to_csv(out_dir_path / f'conversion_report_{now_}.csv')
-
+    conversion_report.to_csv(out_dir_path / f'conversion_report_{now_}.csv')
