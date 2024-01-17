@@ -1,4 +1,3 @@
-session2csv.py
 """A module for converting each session into corresponding pre-structured CSV tables.
 Evoked at each session from the main conversion module, the products would be finally
 removed from within the main module itself.
