@@ -15,6 +15,7 @@ To start using the package:
 2. install the dcl2nwb package from this repository by simply cloning and installing it locally,
 ```
 git clone https://github.com/Defense-Circuits-Lab/dcl2nwb.git
+
 pip install .
 ```
 while in the cloned directory.
@@ -33,7 +34,7 @@ main.start_conversion()
 ```
 an interactive dialog-box would appear to choose the root directory of the experiment containing all the sessions, then another box to choose the outgoing directory into which the conversions (along with scan and conversion report logs) will be saved. The last dialog would ask you to choose the sessionsList.csv and there you go! wait for the conversions to complete and the step2step status will be printed out (color-codedly).
 
-## Author(s)
+## Author
 * Hamidreza Alimohammadi (alimohammadi.hamidreza@gmail.com)
 
 ## Version History
