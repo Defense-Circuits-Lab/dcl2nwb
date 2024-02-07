@@ -26,7 +26,7 @@ from dcl2nwb import main
 
 main.generate_templates()
 ```
-this would generate the templates folder in `./data` containing the pre-structured tables and for all sessions these files should be updated separately -as will be carried out by session2csv module.
+this would generate the templates folder in `./data` containing the pre-structured tables and for all sessions these files should be updated separately -as will be carried out by `session2csv` module.
 
 4. get started with the conversion:
 ```
