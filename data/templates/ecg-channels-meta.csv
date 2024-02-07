@@ -1,0 +1,3 @@
+,channel_name,channel_type,electrodes
+0,ch_0,single,el_0
+1,ch_1,differential,el_0 and el_1

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: dcl2nwb
-Version: 0.0.1
+Version: 0.1.0
 Summary: adaptive and customizable conversion tool to standardize the data storage of Defense Circuits Lab (DCL) into NWB format
 Author: Hamidreza Alimohammadi
 Author-email: <alimohammadi.hamidreza@gmail.com>
@@ -9,6 +9,7 @@ Classifier: Programming Language :: Python :: 3
 Classifier: Operating System :: Linux :: Ubuntu
 Classifier: Operating System :: Microsoft :: Windows
 Description-Content-Type: text/markdown
+License-File: LICENSE
 
 # dcl2nwb [Python] package for NWB data standard conversion
 This repository contains the codes to convert acquired and processed data from Defense Circuits Lab (DCL) into NWB standard format.
@@ -63,8 +64,6 @@ Check the environment.yml file.
 *
 ## Version History
 
-* 0.0.1
-
-
+* 0.1.0
 
 

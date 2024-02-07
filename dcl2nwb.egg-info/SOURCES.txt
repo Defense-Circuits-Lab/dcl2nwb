@@ -1,7 +1,9 @@
+LICENSE
 README.md
 setup.py
 dcl2nwb/__init__.py
 dcl2nwb/main.py
+dcl2nwb/path_id.py
 dcl2nwb.egg-info/PKG-INFO
 dcl2nwb.egg-info/SOURCES.txt
 dcl2nwb.egg-info/dependency_links.txt

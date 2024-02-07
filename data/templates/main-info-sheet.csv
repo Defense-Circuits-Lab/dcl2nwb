@@ -1,3 +1,3 @@
-data/meta,session_information,subject_information,devices_information,acquisition,processed_data,behavioral_data,stimulation_data
-mainData,,,,acquisition,processedData,behavioralData,stimulusData
-metaData,session-meta,subject-meta,devices-meta,acquisition-meta,processedData-meta,behavioralData-meta,stimulusData-meta
+data/meta,session_information,subject_information,devices_information,ecg_device,ecg_electrodes,ecg_channels,acquisition,processed_data,behavioral_data,stimulation_data,cardiac_data
+mainData,,,,,,,acquisition,processedData,behavioralData,stimulusData,cardiacData
+metaData,session-meta,subject-meta,devices-meta,ecg-device-meta,ecg-electrodes-meta,ecg-channels-meta,acquisition-meta,processedData-meta,behavioralData-meta,stimulusData-meta,cardiacData-meta

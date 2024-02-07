@@ -13,6 +13,7 @@ from tkinter.filedialog import askdirectory, askopenfilename
 from datetime import datetime
 
 
+# color coding of the outprinted status
 class TextColor:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -88,10 +89,11 @@ for cntr, index_ in enumerate(list(report_unq.index)):
             'convert_behavior': bool(report_unq.at[index_, 'Behaviour']),
             'convert_cardiac': bool(report_unq.at[index_, 'HeartRate']),
             'convert_thermal': bool(report_unq.at[index_, 'Thermal']),
-            'description': 'na',
-            'doi': 'na',
-            'keywords': 'na'
+            'description': 'na',  # temporary use for statesPaper | can be altered
+            'doi': 'https://doi.org/10.1038/s41593-022-01252-w',  # temporary use for statesPaper | can be altered
+            'keywords': 'Integrated cardio-behavioral defensive states'  # temporary use for statesPaper | can be altered
         }
+
         status_ = session2csv(**to_feed)
     except Exception as error:
         session2csv_error = error  # write the error to this variable, if any...
@@ -173,3 +175,5 @@ for cntr, index_ in enumerate(list(report_unq.index)):
         continue
 
     conversion_report.to_csv(out_dir_path / f'conversion_report_{now_}.csv')
+
+# TODO: return the list of remaining (unsuccessfully converted) sessions, if any at the end

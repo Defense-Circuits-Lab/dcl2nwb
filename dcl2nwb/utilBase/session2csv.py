@@ -1,8 +1,3 @@
-"""A module for converting each session into corresponding pre-structured CSV tables.
-Evoked at each session from the main conversion module, the products would be finally
-removed from within the main module itself.
-"""
-
 import numpy as np
 import pandas as pd
 from scipy.io import loadmat
@@ -13,9 +8,7 @@ import shutil
 
 def session2csv(input_dir, experimenter,
                 convert_behavior, convert_cardiac, convert_thermal,
-                description='na',
-                doi='https://doi.org/10.1038/s41593-022-01252-w',
-                keywords='Integrated cardio-behavioral defensive states'):
+                description, doi, keywords):
     """
     A function to convert sessions into pre-structured csv files to be fed into dcl2nwb pipeline.
     :param input_dir: the path object pointing to a single session
@@ -39,8 +32,8 @@ def session2csv(input_dir, experimenter,
     else:
         pathlib.Path.mkdir(out_dir)
 
-    lines_main_path = r'F:\Jeremy\MATLAB_Scripts\Toolbox\+DataBase\+Lists\MouseLines_List.mat'  # to be fixed at the DCL
-    # lines_main_path = r'C:\Users\DCL\Desktop\DCL-files\MouseLines_List.mat'  # test on my PC
+    # lines_main_path = r'F:\Jeremy\MATLAB_Scripts\Toolbox\+DataBase\+Lists\MouseLines_List.mat'  # to be fixed at the DCL
+    lines_main_path = r'C:\Users\DCL\Desktop\DCL-files\MouseLines_List.mat'  # test on my PC
     try:
         lines_main = loadmat(lines_main_path)  # to be fixed at the DCL
     except:

@@ -1,0 +1,5 @@
+data_index,name,unit,processing_description,interface_subtype,interface_name,type
+ecg,X,X,X,ECG,nan,R
+heartRate,Y,Y,Y,HR,nan,nan
+ceil,A,A,A,AUX,nan,nan
+hr2ceil,B,B,B,HR,hr2ceil,nan

@@ -1,0 +1,2 @@
+,manufacturer,description,filtering,gain,offset,synchronization,endpoint_recording_device
+0,Y,Y,notch-60Hz-analog,string-100,string-0,taken care of via ...,main_device

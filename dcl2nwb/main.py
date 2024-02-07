@@ -1,5 +1,6 @@
 import runpy as rp
 from pathlib import Path
+from . import path_id  # to get the initialization of the directory
 
 
 def start_conversion():
@@ -14,5 +15,5 @@ def generate_templates():
     rp.run_path(path_)
 
 
-curr_ = Path(__file__).parents[0]  # dynamic path of the main.py container folder
+curr_ = Path(path_id.__file__).parent  # dynamic path of the main.py container folder
 

@@ -1,3 +1,0 @@
-data/meta,session_information,subject_information,devices_information,acquisition,processed_data,behavioral_data,stimulation_data
-mainData,,,,acquisition,processedData,behavioralData,stimulusData
-metaData,session-meta,subject-meta,devices-meta,acquisition-meta,processedData-meta,behavioralData-meta,stimulusData-meta

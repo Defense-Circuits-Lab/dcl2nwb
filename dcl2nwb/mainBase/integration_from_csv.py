@@ -1,8 +1,16 @@
-import warnings
 import pandas as pd
+import warnings
 
 
 def drive_scan(in_dir, in_dir_file, out_dir, now_):
+    """
+    A function to scan the drive to analyze the unique existence of the sessions.
+    :param in_dir: a path object pointing to the main root on the drive persumably containing all the sessions
+    :param in_dir_file: a path object pointing to the CSV table of all the sessions (sessionsList.csv)
+    :param out_dir: a path to which the final conversions and the reporting logs will be written
+    :param now_: unique starting time of the conversion process (for naming of the scan log)
+    :return: an extended data frame of the input sessionsList
+    """
 
     list_df = pd.read_csv(in_dir_file, dtype={'Line': 'object', 'MouseID': 'object'})  # control; since they're added
     list_df['root'] = list_df['Line'] + list_df['MouseID'].apply(lambda x: f'_{x}')
