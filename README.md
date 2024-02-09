@@ -11,7 +11,6 @@ To start using the package:
 1.  I recommend to set up a new [conda environment](https://docs.conda.io/en/latest/miniconda.html) with the following dependencies:
 
 * pynwb==2.5.0
-* python==3.12.0
 * ndx-ecg==0.1.0 (https://pypi.org/project/ndx-ecg/)
 
 2. install the dcl2nwb package from this repository by simply cloning and installing it locally,
