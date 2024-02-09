@@ -1,0 +1,4 @@
+,Line,MouseID,Date,Paradigm,HeartRate,Behaviour,Thermal,Experimenter,root,rootUnique,rootMulti,parUnique,parMulti,uniqueExistence
+0,175,F4-41,190904,CD1,1,1,1,Nina Schukraft,175_F4-41,[WindowsPath('C:/Users/DCL/PycharmProjects/dcl2nwb/dcl2nwb/TEST_env/175_F4-41')],,[WindowsPath('C:/Users/DCL/PycharmProjects/dcl2nwb/dcl2nwb/TEST_env/175_F4-41/190904_CD1')],,True
+1,175,F9-23,210531,Opto,1,1,0,Nina Schukraft,175_F9-23,[WindowsPath('C:/Users/DCL/PycharmProjects/dcl2nwb/dcl2nwb/TEST_env/175_F9-23')],,[WindowsPath('C:/Users/DCL/PycharmProjects/dcl2nwb/dcl2nwb/TEST_env/175_F9-23/210531_Opto')],,True
+2,208,F3-25,220605,HomeCageLongBLLongCS,1,1,0,Nina Schukraft,208_F3-25,[WindowsPath('C:/Users/DCL/PycharmProjects/dcl2nwb/dcl2nwb/TEST_env/208_F3-25')],,[WindowsPath('C:/Users/DCL/PycharmProjects/dcl2nwb/dcl2nwb/TEST_env/208_F3-25/220605_HomeCageLongBLLongCS')],,True
